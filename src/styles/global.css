@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+
+@theme {
+    --color-host-50: #fff8f3;
+    --color-host-100: #ffe8d8;
+    --color-host-200: #ffd2b2;
+    --color-host-300: #ffb37e;
+    --color-host-400: #ff8b42;
+    --color-host-500: #ff5d01;
+    --color-host-600: #e14f00;
+    --color-ink-950: #111111;
+}
+
+@layer base {
+    :root {
+        color: var(--color-ink-950);
+        background:
+            radial-gradient(circle at top, rgba(255, 93, 1, 0.08), transparent 30%),
+            linear-gradient(180deg, #fffdfb 0%, #fff7f1 100%);
+    }
+
+    body {
+        min-height: 100vh;
+    }
+}

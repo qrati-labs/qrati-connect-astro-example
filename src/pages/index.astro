@@ -1,17 +1,13 @@
 ---
+import '../styles/global.css';
 import { fileURLToPath } from 'node:url';
 
-const DEFAULT_EXAMPLE_ORG_ID = '69c279d34b94d4dfce36e7fe';
-const DEFAULT_QRATI_SCRIPT_URL = 'https://cdn.jsdelivr.net/npm/@qratilabs/qrati-connect@beta/element/web.es.js';
-
-const EXAMPLE_ORG_ID = import.meta.env.PUBLIC_EXAMPLE_ORG_ID ?? DEFAULT_EXAMPLE_ORG_ID;
+const EXAMPLE_ORG_ID = import.meta.env.PUBLIC_EXAMPLE_ORG_ID;
 const localQratiScriptPath = fileURLToPath(new URL('../../../../dist/element/web.es.js', import.meta.url)).replace(
   /\\/g,
   '/'
 );
-const QRATI_SCRIPT_URL = import.meta.env.DEV
-  ? `/@fs${localQratiScriptPath}`
-  : import.meta.env.PUBLIC_QRATI_SCRIPT_URL ?? DEFAULT_QRATI_SCRIPT_URL;
+const QRATI_SCRIPT_URL = import.meta.env.DEV ? `/@fs${localQratiScriptPath}` : import.meta.env.PUBLIC_QRATI_SCRIPT_URL;
 ---
 
 <html lang="en">
@@ -20,25 +16,40 @@ const QRATI_SCRIPT_URL = import.meta.env.DEV
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Qrati Connect — Astro Example</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body>
-    <div class="app">
-      <header class="hero">
-        <h1>Qrati Connect — Astro Example</h1>
-        <p>
-          This demo shows how to embed the
-          <a href="https://qrati.com">Qrati Connect</a> widget in an Astro
-          application using the web-component CDN.
-        </p>
-      </header>
+  <body class="min-h-screen font-[Inter,system-ui,sans-serif] text-neutral-950 antialiased">
+    <div class="relative isolate overflow-hidden">
 
-      <main class="content">
-        <qrati-connect
-          organization-id={EXAMPLE_ORG_ID}
-          theme="light"
-          router="hash"
-        ></qrati-connect>
-      </main>
+      <div class="mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-10 sm:px-6 lg:px-8">
+        <header class="mx-auto max-w-3xl text-center">
+          <p class="mb-4 inline-flex items-center gap-2 rounded-full border border-host-200 bg-white/80 px-4 py-1 text-[0.7rem] font-extrabold uppercase tracking-[0.28em] text-host-600 shadow-[0_10px_30px_rgba(255,93,1,0.08)] backdrop-blur">
+            Qrati Connect Demo
+          </p>
+          <h1 class="text-4xl font-bold leading-tight tracking-tight text-neutral-950 sm:text-3xl">
+            <span class="text-host-500">Qrati</span> Connect inside an Astro host site
+          </h1>
+          <p class="mx-auto mt-5 max-w-2xl text-base text-neutral-600">
+            This example uses the official Tailwind Astro setup and keeps the host page visually separate from the embedded widget.
+            The watermark belongs to the host shell, while the clean white panel belongs to Qrati Connect.
+          </p>
+        </header>
+
+        <main class="mt-10 sm:mt-14">
+          <section class="relative overflow-hidden rounded-4xl bg-white dark:bg-black p-4 sm:p-6">
+              <qrati-connect
+                organization-id={EXAMPLE_ORG_ID}
+                theme="light"
+                router="hash"
+              />
+          </section>
+        </main>
+      </div>
     </div>
 
     <script is:inline define:vars={{ QRATI_SCRIPT_URL }}>
@@ -46,48 +57,3 @@ const QRATI_SCRIPT_URL = import.meta.env.DEV
     </script>
   </body>
 </html>
-
-<style>
-  body {
-    margin: 0;
-    font-family: system-ui, -apple-system, sans-serif;
-    line-height: 1.5;
-  }
-
-  .app {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-  }
-
-  .hero {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-
-  .hero h1 {
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-
-  .hero p {
-    color: #555;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-
-  .hero a {
-    color: #ff5d01;
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .hero a:hover {
-    text-decoration: underline;
-  }
-
-  .content {
-    min-height: 400px;
-  }
-</style>
