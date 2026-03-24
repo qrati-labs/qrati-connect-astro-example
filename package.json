@@ -1,14 +1,19 @@
 {
-  "name": "qrati-connect-astro-example",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "astro": "5.18.0"
-  }
+    "name": "qrati-connect-astro-example",
+    "type": "module",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "astro dev",
+        "sdk:watch": "pnpm --dir ../.. run build:element -- --watch",
+        "dev:local-sdk": "concurrently -k -n sdk,astro -c yellow,cyan \"pnpm run sdk:watch\" \"pnpm run dev\"",
+        "build": "astro build",
+        "preview": "astro preview",
+        "astro": "astro"
+    },
+    "dependencies": {
+        "astro": "6.0.8"
+    },
+    "devDependencies": {
+        "concurrently": "9.2.1"
+    }
 }

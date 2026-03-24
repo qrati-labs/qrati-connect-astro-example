@@ -1,17 +1,93 @@
 ---
+import { fileURLToPath } from 'node:url';
 
+const DEFAULT_EXAMPLE_ORG_ID = '69c279d34b94d4dfce36e7fe';
+const DEFAULT_QRATI_SCRIPT_URL = 'https://cdn.jsdelivr.net/npm/@qratilabs/qrati-connect@beta/element/web.es.js';
+
+const EXAMPLE_ORG_ID = import.meta.env.PUBLIC_EXAMPLE_ORG_ID ?? DEFAULT_EXAMPLE_ORG_ID;
+const localQratiScriptPath = fileURLToPath(new URL('../../../../dist/element/web.es.js', import.meta.url)).replace(
+  /\\/g,
+  '/'
+);
+const QRATI_SCRIPT_URL = import.meta.env.DEV
+  ? `/@fs${localQratiScriptPath}`
+  : import.meta.env.PUBLIC_QRATI_SCRIPT_URL ?? DEFAULT_QRATI_SCRIPT_URL;
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qrati Connect — Astro Example</title>
+  </head>
+  <body>
+    <div class="app">
+      <header class="hero">
+        <h1>Qrati Connect — Astro Example</h1>
+        <p>
+          This demo shows how to embed the
+          <a href="https://qrati.com">Qrati Connect</a> widget in an Astro
+          application using the web-component CDN.
+        </p>
+      </header>
+
+      <main class="content">
+        <qrati-connect
+          organization-id={EXAMPLE_ORG_ID}
+          theme="light"
+          router="hash"
+        ></qrati-connect>
+      </main>
+    </div>
+
+    <script is:inline define:vars={{ QRATI_SCRIPT_URL }}>
+      import(QRATI_SCRIPT_URL);
+    </script>
+  </body>
 </html>
+
+<style>
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+  }
+
+  .app {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .hero h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero p {
+    color: #555;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .hero a {
+    color: #ff5d01;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .hero a:hover {
+    text-decoration: underline;
+  }
+
+  .content {
+    min-height: 400px;
+  }
+</style>
