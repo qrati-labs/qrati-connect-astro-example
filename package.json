@@ -8,14 +8,22 @@
         "dev:local-sdk": "concurrently -k -n sdk,astro -c yellow,cyan \"pnpm run sdk:watch\" \"pnpm run dev\"",
         "build": "astro build",
         "preview": "astro preview",
-        "astro": "astro"
+        "astro": "astro",
+        "deploy:beta": "git fetch origin && git checkout release/beta && git pull origin release/beta --no-ff --no-edit && git merge origin/main --no-ff --no-edit -m 'Merge main into release/beta for deployment' && git push origin release/beta && git checkout -",
+        "deploy:prod": "git fetch origin && git checkout release/prod && git pull origin release/prod --no-ff --no-edit && git merge origin/release/beta --no-ff --no-edit -m 'Merge release/beta into release/prod for deployment' && git push origin release/prod && git checkout -"
     },
     "dependencies": {
         "astro": "6.0.8"
     },
     "devDependencies": {
-        "@tailwindcss/vite": "^4.2.2",
+        "@tailwindcss/vite": "4.2.2",
         "concurrently": "9.2.1",
-        "tailwindcss": "^4.2.2"
+        "tailwindcss": "4.2.2"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "esbuild",
+            "sharp"
+        ]
     }
 }
