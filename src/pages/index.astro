@@ -1,13 +1,8 @@
 ---
 import '../styles/global.css';
-import { fileURLToPath } from 'node:url';
 
 const EXAMPLE_ORG_ID = import.meta.env.PUBLIC_EXAMPLE_ORG_ID;
-const localQratiScriptPath = fileURLToPath(new URL('../../../../dist/element/web.es.js', import.meta.url)).replace(
-  /\\/g,
-  '/'
-);
-const QRATI_SCRIPT_URL = import.meta.env.DEV ? `/@fs${localQratiScriptPath}` : import.meta.env.PUBLIC_QRATI_SCRIPT_URL;
+const QRATI_SCRIPT_URL = import.meta.env.PUBLIC_QRATI_SCRIPT_URL;
 ---
 
 <html lang="en">
