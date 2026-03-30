@@ -3,6 +3,7 @@ import '../styles/global.css';
 
 const EXAMPLE_ORG_ID = import.meta.env.PUBLIC_EXAMPLE_ORG_ID;
 const QRATI_SCRIPT_URL = import.meta.env.PUBLIC_QRATI_SCRIPT_URL;
+const QRATI_STYLE_URL = QRATI_SCRIPT_URL?.replace(/\/web\.es\.js$/, '/styles.css');
 ---
 
 <html lang="en">
@@ -10,6 +11,7 @@ const QRATI_SCRIPT_URL = import.meta.env.PUBLIC_QRATI_SCRIPT_URL;
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {QRATI_STYLE_URL && <link rel="stylesheet" href={QRATI_STYLE_URL} />}
     <title>Qrati Connect — Astro Example</title>
   </head>
   <body class="min-h-screen text-neutral-950 antialiased">
@@ -27,6 +29,20 @@ const QRATI_SCRIPT_URL = import.meta.env.PUBLIC_QRATI_SCRIPT_URL;
             This example uses the official Tailwind Astro setup and keeps the host page visually separate from the embedded widget.
             The watermark belongs to the host shell, while the clean white panel belongs to Qrati Connect.
           </p>
+          <div class="mt-6 flex items-center justify-center gap-3">
+            <a
+              href="/"
+              class="rounded-full bg-host-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-host-600"
+            >
+              Runtime Script Demo
+            </a>
+            <a
+              href="/local-dist"
+              class="rounded-full border border-host-200 bg-white px-4 py-2 text-sm font-semibold text-host-700 transition hover:border-host-400 hover:text-host-900"
+            >
+              Local Dist Demo
+            </a>
+          </div>
         </header>
 
         <main class="mt-10 sm:mt-14">
