@@ -13,7 +13,7 @@ Open **http://localhost:4321** and you will see the Qrati Connect widget rendere
 
 ## How It Works
 
-### 1. Define your Organisation ID
+### 1. Define your Organization ID
 
 In the page frontmatter:
 
