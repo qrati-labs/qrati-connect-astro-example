@@ -1,5 +1,9 @@
 # Qrati Connect — Astro Example
 
+[![Qrati Connect — embeddable event photo galleries](public/qrati-connect-og.png)](https://qrati.com/connect)
+
+Add a live event photo gallery to Astro sites with guest uploads, lightbox viewing, emoji reactions, and contest leaderboards. [Explore Qrati Connect](https://qrati.com/connect) or [view the live Astro example](https://qrati.com/connect/astro-example).
+
 An [Astro](https://astro.build) example that embeds [Qrati Connect](https://qrati.com)
 using the no-code **embed script**, with a host-controlled light/dark theme
 and an immediately rendered widget. The demo org is also
