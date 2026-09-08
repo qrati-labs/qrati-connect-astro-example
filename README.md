@@ -2,7 +2,7 @@
 
 An [Astro](https://astro.build) example that embeds [Qrati Connect](https://qrati.com)
 using the no-code **embed script**, with a host-controlled light/dark theme
-and a demo login for organizations that use custom auth. The demo org is also
+and an immediately rendered widget. The demo org is also
 configured for custom storage on the Qrati backend — that's a server-side
 setting with no frontend impact.
 
@@ -18,7 +18,7 @@ A single `async` script tag mounts the widget where it sits; config travels in
   data-router="hash"></script>
 ```
 
-After sign-in this example injects that tag (see `src/pages/index.astro`),
+The example injects that tag immediately (see `src/pages/index.astro`),
 adding `data-uid` / `data-fname` / `data-lname` for the known user. The tag is
 re-injected whenever the user or theme changes, since scripts don't react to
 attribute mutation.
@@ -39,7 +39,6 @@ Open **http://localhost:4321** to view the demo.
 | ---------------------------| --------------------------------------------------------------------|
 | `PUBLIC_EXAMPLE_ORG_ID`    | Your Qrati organization ID                                        |
 | `PUBLIC_QRATI_SCRIPT_URL`  | CDN URL of the embed script (`embed/embed.js`)                    |
-| `PUBLIC_API_ENDPOINT`      | Demo-login endpoint for custom-auth orgs. Leave empty to skip it. |
 
 ## Other integration methods
 
