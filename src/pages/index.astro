@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 
-const ORGANIZATION_ID = import.meta.env.PUBLIC_EXAMPLE_ORG_ID ?? '69ad9c7876d8bf6f864b3a65';
+const ORGANIZATION_ID = import.meta.env.PUBLIC_EXAMPLE_ORG_ID ?? '';
 const QRATI_SCRIPT_URL = import.meta.env.PUBLIC_QRATI_SCRIPT_URL ?? 'https://cdn.jsdelivr.net/npm/@qratilabs/qrati-connect/embed/embed.js';
 
 const GITHUB_ORG = 'qrati-labs';
@@ -554,8 +554,9 @@ const year = new Date().getFullYear();
 
     <!-- Cookie Consent (client-side module) -->
     <script>
-      import { checkConsentRequired, ensureCookieConsentInitialized, showCookiePreferences } from '../lib/cookieConsent';
+      import { checkConsentRequired, ensureCookieConsentInitialized, initGtm, showCookiePreferences } from '../lib/cookieConsent';
 
+      initGtm(import.meta.env.PUBLIC_GTM_ID ?? '');
       checkConsentRequired().then(function (required) {
         ensureCookieConsentInitialized(required);
       });
