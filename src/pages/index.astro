@@ -1,255 +1,573 @@
 ---
 import '../styles/global.css';
 
-const EXAMPLE_ORG_ID = import.meta.env.PUBLIC_EXAMPLE_ORG_ID;
-const EMBED_URL = import.meta.env.PUBLIC_QRATI_SCRIPT_URL;
-const API_ENDPOINT = import.meta.env.PUBLIC_API_ENDPOINT;
+const ORGANIZATION_ID = import.meta.env.PUBLIC_EXAMPLE_ORG_ID ?? '69ad9c7876d8bf6f864b3a65';
+const QRATI_SCRIPT_URL = import.meta.env.PUBLIC_QRATI_SCRIPT_URL ?? 'https://cdn.jsdelivr.net/npm/@qratilabs/qrati-connect/embed/embed.js';
 
 const GITHUB_ORG = 'qrati-labs';
 const REPO = 'qrati-connect-astro-example';
 const repoUrl = `https://github.com/${GITHUB_ORG}/${REPO}`;
+const vscodeUrl = `https://vscode.dev/github/${GITHUB_ORG}/${REPO}`;
+const npmUrl = 'https://www.npmjs.com/package/@qratilabs/qrati-connect';
+const year = new Date().getFullYear();
 ---
 
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- %GTM_HEAD% -->
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Qrati Connect — Astro Example</title>
-    <!-- Prevent flash of wrong theme (FOUC guard) -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Primary SEO Meta Tags -->
+    <title>Embeddable Event Photo Gallery Astro Component | Qrati Connect</title>
+    <meta name="title" content="Embeddable Event Photo Gallery Astro Component | Qrati Connect" />
+    <meta
+      name="description"
+      content="Embed a live, interactive event photo gallery in Astro using the framework-agnostic web component with guest uploads, lightbox, emoji reactions, and contest leaderboards."
+    />
+    <meta
+      name="keywords"
+      content="embeddable event photo gallery, astro photo gallery component, astro web component, live event photo wall, guest photo uploads, astro ugc gallery, event photo sharing widget, photo contest leaderboard, qrati connect astro, @qratilabs/qrati-connect"
+    />
+    <meta name="author" content="Qrati Labs" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <link rel="canonical" href="https://qrati.com/connect/astro-example" />
+
+    <!-- Theme & App Meta -->
+    <meta name="theme-color" content="#ff4800" />
+    <meta name="msapplication-TileColor" content="#ff4800" />
+    <meta name="application-name" content="Qrati Connect Astro" />
+    <meta name="apple-mobile-web-app-title" content="Qrati Connect" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Favicons & App Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/qrati-connect-logo-square.png" />
+    <link rel="apple-touch-icon" href="/qrati-connect-logo-square.png" />
+
+    <!-- Preconnect & Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="dns-prefetch" href="https://assets.qrati.com" />
+    <link rel="dns-prefetch" href="https://api.qrati.com" />
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Qrati Connect" />
+    <meta property="og:url" content="https://qrati.com/connect/astro-example" />
+    <meta property="og:title" content="Embeddable Event Photo Gallery Astro Component | Qrati Connect" />
+    <meta property="og:description" content="Embed a live, interactive event photo gallery in Astro using the framework-agnostic web component with guest uploads, lightbox, emoji reactions, and contest leaderboards." />
+    <meta property="og:image" content="https://qrati.com/connect/astro-example/qrati-connect-og.png" />
+    <meta property="og:image:secure_url" content="https://qrati.com/connect/astro-example/qrati-connect-og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content="Qrati Connect Astro Web Component — Live Event Photo Gallery Embed" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@qratilabs" />
+    <meta name="twitter:creator" content="@qratilabs" />
+    <meta name="twitter:title" content="Embeddable Event Photo Gallery Astro Component | Qrati Connect" />
+    <meta name="twitter:description" content="Embed a live, interactive event photo gallery in Astro using the framework-agnostic web component with guest uploads, lightbox, emoji reactions, and contest leaderboards." />
+    <meta name="twitter:image" content="https://qrati.com/connect/astro-example/qrati-connect-og.png" />
+    <meta name="twitter:image:alt" content="Qrati Connect Astro Component Preview" />
+
+    <!-- Structured Data / JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://qrati.com/#organization",
+          "name": "Qrati Labs, LLC",
+          "url": "https://qrati.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://qrati.com/connect/astro-example/qrati-connect-logo-square.png",
+            "width": 128,
+            "height": 128
+          },
+          "sameAs": [
+            "https://github.com/qrati-labs",
+            "https://www.linkedin.com/company/qrati"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://qrati.com/#website",
+          "url": "https://qrati.com/",
+          "name": "Qrati",
+          "publisher": { "@id": "https://qrati.com/#organization" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://qrati.com/connect/astro-example#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://qrati.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Connect", "item": "https://qrati.com/connect" },
+            { "@type": "ListItem", "position": 3, "name": "Astro Example", "item": "https://qrati.com/connect/astro-example" }
+          ]
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://qrati.com/connect/astro-example#webpage",
+          "url": "https://qrati.com/connect/astro-example",
+          "name": "Embeddable Event Photo Gallery Astro Component | Qrati Connect",
+          "description": "Embed a live, interactive event photo gallery in Astro using the framework-agnostic web component with guest uploads, lightbox, emoji reactions, and contest leaderboards.",
+          "isPartOf": { "@id": "https://qrati.com/#website" },
+          "breadcrumb": { "@id": "https://qrati.com/connect/astro-example#breadcrumb" },
+          "about": { "@id": "https://qrati.com/connect/astro-example#software" },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "https://qrati.com/connect/astro-example/qrati-connect-og.png",
+            "width": 1200,
+            "height": 630
+          },
+          "inLanguage": "en"
+        },
+        {
+          "@type": ["SoftwareApplication", "SoftwareSourceCode"],
+          "@id": "https://qrati.com/connect/astro-example#software",
+          "name": "Qrati Connect Astro Web Component",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Web",
+          "programmingLanguage": "TypeScript",
+          "runtimePlatform": "Astro 7, Web Components",
+          "codeRepository": "https://github.com/qrati-labs/qrati-connect-astro-example",
+          "downloadUrl": "https://www.npmjs.com/package/@qratilabs/qrati-connect",
+          "url": "https://qrati.com/connect/astro-example",
+          "description": "A drop-in web component for embedding live event photo galleries into Astro apps with island architecture, guest media uploads, emoji reactions, and contest leaderboards.",
+          "publisher": { "@id": "https://qrati.com/#organization" },
+          "featureList": [
+            "Drop-in Astro web component integration",
+            "Direct guest photo and video uploads",
+            "Client-side image compression and HEIC conversion",
+            "Full-screen responsive lightbox",
+            "Emoji reactions with real-time feedback",
+            "Contest leaderboards and star ratings",
+            "Host-controlled light/dark theme synchronization",
+            "Zero backend configuration required"
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://qrati.com/connect/astro-example#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How do I embed an event photo gallery in Astro?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Load the Qrati Connect embed script from CDN or the @qratilabs/qrati-connect package via a <script> tag in your Astro page. The <qrati-connect> custom element renders the live gallery once the script is loaded."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can event attendees upload photos directly through the Astro gallery?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. When media uploads are enabled in your Qrati organization settings, attendees can upload photos and videos directly from mobile or desktop with automatic client-side compression and HEIC conversion."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How does Astro handle web component theme synchronization?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Astro sets the data-theme attribute on the <html> element. A small inline script reads localStorage on load to avoid flash, and a client-side event listener updates the qrati-connect theme attribute reactively on toggle."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does the Qrati Connect web component support dark mode?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The custom element accepts a theme attribute ('light' or 'dark'), enabling seamless synchronization with your Astro application's host theme and system color preferences."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I run photo contests and display rankings in the Astro gallery?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Qrati Connect supports contest mode, star ratings, emoji reactions, and ranked leaderboards configured directly from your Qrati organization dashboard."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <!-- Pre-hydration Theme Initialization to prevent FOUC -->
     <script is:inline>
-      (function(){var s=localStorage.getItem('qc-theme'),p=window.matchMedia('(prefers-color-scheme: dark)').matches;if(s==='dark'||(!s&&p))document.documentElement.classList.add('dark');}());
+      (function () {
+        try {
+          var t = localStorage.getItem('qc-theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', t);
+          if (t === 'dark') document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
     </script>
   </head>
-  <body class="min-h-screen text-neutral-950 antialiased dark:text-neutral-100">
 
-    <!-- Dark / Light mode toggle (fixed top-right) -->
-    <button
-      id="theme-toggle"
-      type="button"
-      aria-label="Toggle dark mode"
-      class="fixed top-4 right-4 z-50 flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 bg-white/90 text-neutral-600 shadow-sm backdrop-blur-sm transition-all duration-200 hover:border-neutral-800 hover:bg-neutral-900 hover:text-white dark:border-neutral-700 dark:bg-neutral-900/90 dark:text-neutral-300 dark:hover:border-white dark:hover:bg-white dark:hover:text-neutral-900"
-    >
-      <!-- Moon: visible in light mode -->
-      <svg id="icon-moon" class="size-[1.05rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-      </svg>
-      <!-- Sun: visible in dark mode -->
-      <svg id="icon-sun" class="hidden size-[1.05rem]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="5"/>
-        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-      </svg>
-    </button>
+  <body>
+    <!-- %GTM_BODY% -->
 
-    <div class="relative isolate overflow-hidden">
-      <div class="mx-auto flex min-h-screen max-w-6xl flex-col px-4 py-10 sm:px-6 lg:px-8">
-        <header class="mx-auto max-w-3xl text-center">
-          <p class="mb-4 inline-flex items-center gap-2 rounded-full border border-host-200 bg-white/80 px-4 py-1 text-[0.7rem] font-extrabold uppercase tracking-[0.28em] text-host-600 backdrop-blur">
-            Qrati Connect Demo
-          </p>
-          <h1 class="text-4xl font-bold leading-tight tracking-tight text-neutral-950 dark:text-neutral-50 sm:text-3xl">
-            <a href="https://qrati.com" target="_blank" rel="noopener noreferrer"><span class="text-host-500">Qrati</span></a> Connect inside an Astro host site
+    <!-- Theme toggle -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙 Dark</button>
+
+    <div class="page-shell">
+      <div class="page-frame">
+
+        <!-- Hero -->
+        <header class="hero">
+          <p class="hero-kicker">Embeddable Astro Gallery SDK</p>
+          <h1>
+            <a href="https://qrati.com" target="_blank" rel="noopener noreferrer">Qrati</a>
+            Connect inside an Astro host site
           </h1>
-          <p class="mx-auto mt-5 max-w-3xl text-base text-neutral-600 dark:text-neutral-400">
-            This example demonstrates how to integrate <a href="https://qrati.com" target="_blank" rel="noopener noreferrer"><span class="text-host-500 font-semibold">Qrati</span></a> Connect into an Astro application using the no-code <strong>embed script</strong>, with a host-controlled theme and a demo login for organizations that use custom auth.
+          <p class="hero-copy">
+            A drop-in web component for embedding live event photo galleries with guest uploads,
+            full-screen lightbox, emoji reactions, and contest leaderboards.
+            Astro island architecture, host-controlled theme, clean link-outs,
+            and zero backend configuration.
           </p>
 
-          <!-- Action links -->
-          <div class="mt-6 flex flex-wrap items-center justify-center gap-2">
-            <a
-              href={repoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 bg-white/70 px-3 py-1.5 text-xs font-medium text-neutral-600 backdrop-blur transition-all duration-150 hover:border-neutral-800 hover:bg-neutral-950 hover:text-white dark:border-neutral-700 dark:bg-neutral-800/60 dark:text-neutral-300 dark:hover:border-neutral-300 dark:hover:bg-neutral-100 dark:hover:text-neutral-900"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" class="size-4"><path fill="currentColor" d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5c.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34c-.46-1.16-1.11-1.47-1.11-1.47c-.91-.62.07-.6.07-.6c1 .07 1.53 1.03 1.53 1.03c.87 1.52 2.34 1.07 2.91.83c.09-.65.35-1.09.63-1.34c-2.22-.25-4.55-1.11-4.55-4.92c0-1.11.38-2 1.03-2.71c-.1-.25-.45-1.29.1-2.64c0 0 .84-.27 2.75 1.02c.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02c.55 1.35.2 2.39.1 2.64c.65.71 1.03 1.6 1.03 2.71c0 3.82-2.34 4.66-4.57 4.91c.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"></path></svg>
-              View on GitHub
+          <div class="action-pills" aria-label="Example links">
+            <a href={repoUrl} target="_blank" rel="noopener noreferrer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5c.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34c-.46-1.16-1.11-1.47-1.11-1.47c-.91-.62.07-.6.07-.6c1 .07 1.53 1.03 1.53 1.03c.87 1.52 2.34 1.07 2.91.83c.09-.65.35-1.09.63-1.34c-2.22-.25-4.55-1.11-4.55-4.92c0-1.11.38-2 1.03-2.71c-.1-.25-.45-1.29.1-2.64c0 0 .84-.27 2.75 1.02c.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02c.55 1.35.2 2.39.1 2.64c.65.71 1.03 1.6 1.03 2.71c0 3.82-2.34 4.66-4.57 4.91c.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/>
+              </svg>
+              <span>View on GitHub</span>
             </a>
-
-            <a
-              href={`https://vscode.dev/github/${GITHUB_ORG}/${REPO}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 bg-white/70 px-3 py-1.5 text-xs font-medium text-neutral-600 backdrop-blur transition-all duration-150 hover:border-[#007ACC] hover:bg-[#007ACC] hover:text-white dark:border-neutral-700 dark:bg-neutral-800/60 dark:text-neutral-300 dark:hover:border-[#007ACC] dark:hover:bg-[#007ACC] dark:hover:text-white"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 16 16" class="size-4"><path fill="currentColor" d="M10.863 13.919a.8.8 0 0 1-.644.025a.8.8 0 0 1-.279-.183L4.816 9.063l-2.232 1.703a.54.54 0 0 1-.691-.031l-.716-.655a.546.546 0 0 1 0-.805L3.112 7.5L1.177 5.725a.546.546 0 0 1 0-.805l.716-.655a.54.54 0 0 1 .691-.031l2.232 1.703L9.94 1.239a.805.805 0 0 1 .923-.159l2.677 1.295c.281.136.46.422.46.736V8h-3.248V4.534L6.864 7.5l3.888 2.966V8H14v3.889c0 .314-.179.6-.46.736z"></path></svg>
-              Open in VS Code
+            <a href={vscodeUrl} target="_blank" rel="noopener noreferrer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                <path fill="currentColor" d="M10.863 13.919a.8.8 0 0 1-.644.025a.8.8 0 0 1-.279-.183L4.816 9.063l-2.232 1.703a.54.54 0 0 1-.691-.031l-.716-.655a.546.546 0 0 1 0-.805L3.112 7.5L1.177 5.725a.546.546 0 0 1 0-.805l.716-.655a.54.54 0 0 1 .691-.031l2.232 1.703L9.94 1.239a.805.805 0 0 1 .923-.159l2.677 1.295c.281.136.46.422.46.736V8h-3.248V4.534L6.864 7.5l3.888 2.966V8H14v3.889c0 .314-.179.6-.46.736z"/>
+              </svg>
+              <span>Open in VS Code</span>
+            </a>
+            <a href={npmUrl} target="_blank" rel="noopener noreferrer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M1.5 0h21v24h-10.5v-19.5h-5.25v19.5h-5.25z"/>
+              </svg>
+              <span>npm package</span>
             </a>
           </div>
         </header>
 
-        <!-- Demo auth login card -->
-        <main class="mt-3 sm:mt-9">
-          <div id="login" class="mx-auto max-w-md rounded-xl border border-neutral-200 bg-white/70 p-6 text-left backdrop-blur dark:border-neutral-700 dark:bg-neutral-800/60">
-            <h2 class="text-lg font-bold text-neutral-950 dark:text-neutral-50">Demo sign in</h2>
-            <p class="mb-5 mt-1 text-sm text-neutral-500 dark:text-neutral-400">Identify yourself to load the widget as a known user.</p>
-            <form id="login-form" class="flex flex-col gap-3.5">
-              <div class="flex flex-col gap-1.5">
-                <label for="name" class="text-sm font-semibold text-neutral-600 dark:text-neutral-400">Full name</label>
-                <input id="name" type="text" placeholder="John Doe" autocomplete="name" class="rounded-lg border border-neutral-200 bg-white px-3.5 py-2.5 text-sm text-neutral-950 outline-none focus:border-host-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100" />
-              </div>
-              <div class="flex flex-col gap-1.5">
-                <label for="email" class="text-sm font-semibold text-neutral-600 dark:text-neutral-400">Email</label>
-                <input id="email" type="email" placeholder="john@example.com" autocomplete="email" class="rounded-lg border border-neutral-200 bg-white px-3.5 py-2.5 text-sm text-neutral-950 outline-none focus:border-host-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100" />
-              </div>
-              <p id="error" hidden class="m-0 text-sm text-red-400"></p>
-              <button id="submit" type="submit" class="rounded-lg bg-host-500 py-2.5 font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60">Sign in &amp; load widget</button>
-            </form>
-          </div>
+        <!-- Widget -->
+        <main class="content-shell">
+          <section class="widget-frame" aria-label="Interactive Astro Event Gallery">
+            <h2 class="sr-only">Live Event Photo Gallery Component</h2>
+            <qrati-connect
+              id="qrati-widget"
+              organization-id={ORGANIZATION_ID}
+              theme="light"
+              router="hash"
+            ></qrati-connect>
+          </section>
 
-          <div id="session" hidden>
-            <div class="mb-4 flex flex-wrap items-center justify-center gap-3 text-sm text-neutral-500 dark:text-neutral-400">
-              <span id="session-text"></span>
-              <button id="logout" class="rounded-full border border-neutral-200 bg-white/70 px-3.5 py-1.5 text-xs font-semibold text-neutral-600 backdrop-blur hover:border-host-500/40 hover:text-host-600 dark:border-neutral-700 dark:bg-neutral-800/60 dark:text-neutral-300">Log out</button>
+          <!-- Features Section -->
+          <section class="seo-section" aria-labelledby="features-heading">
+            <div class="seo-section-header">
+              <span class="seo-kicker">Event Gallery Features</span>
+              <h2 id="features-heading">Why Developers Choose Qrati Connect</h2>
+              <p>
+                Deliver an engaging live event photo wall and user-generated content (UGC)
+                experience embedded directly into your Astro application with zero backend overhead.
+              </p>
             </div>
-            <div class="relative overflow-hidden rounded-xl border-2 min-h-64 border-[#ff4800]/50">
-              <section class="p-3 sm:p-6 dark:bg-[#252629] rounded-lg" id="qrati-embed"></section>
+
+            <div class="seo-features-grid">
+              <article class="seo-feature-card">
+                <div class="seo-feature-icon" aria-hidden="true">🖼️</div>
+                <h3>Live Event Photo Wall</h3>
+                <p>
+                  Responsive masonry grid layout, blurhash loading placeholders, and full-screen
+                  lightbox with keyboard navigation for stunning visual presentation.
+                </p>
+              </article>
+
+              <article class="seo-feature-card">
+                <div class="seo-feature-icon" aria-hidden="true">📸</div>
+                <h3>Guest Media Uploads</h3>
+                <p>
+                  Frictionless guest uploads via QR code or direct upload with client-side image
+                  compression and automatic HEIC to JPEG conversion.
+                </p>
+              </article>
+
+              <article class="seo-feature-card">
+                <div class="seo-feature-icon" aria-hidden="true">⭐</div>
+                <h3>Reactions &amp; Contests</h3>
+                <p>
+                  Boost attendee engagement with interactive emoji reactions, community star ratings,
+                  and real-time contest leaderboard rankings.
+                </p>
+              </article>
+
+              <article class="seo-feature-card">
+                <div class="seo-feature-icon" aria-hidden="true">⚡</div>
+                <h3>Astro Island Architecture</h3>
+                <p>
+                  Astro's partial hydration ships minimal JavaScript while the Qrati Connect web
+                  component self-initializes for seamless host theme synchronization.
+                </p>
+              </article>
             </div>
-          </div>
+          </section>
+
+          <!-- Quickstart Section -->
+          <section class="seo-section" aria-labelledby="quickstart-heading">
+            <div class="seo-section-header">
+              <span class="seo-kicker">Developer Integration</span>
+              <h2 id="quickstart-heading">Embed in 3 Simple Steps</h2>
+              <p>
+                Load the web component bundle, render &lt;qrati-connect&gt;, and bind your theme attribute.
+              </p>
+            </div>
+
+            <div class="seo-quickstart-card">
+              <div class="code-header">
+                <div class="code-dots">
+                  <span class="code-dot"></span>
+                  <span class="code-dot"></span>
+                  <span class="code-dot"></span>
+                </div>
+                <span>EventGallery.astro</span>
+              </div>
+              <pre><code>---
+<span class="code-comment">// 1. Load element styles &amp; script from CDN or bundle</span>
+<span class="code-comment">// Styles: https://cdn.jsdelivr.net/npm/@qratilabs/qrati-connect/element/styles.css</span>
+<span class="code-comment">// Script: https://cdn.jsdelivr.net/npm/@qratilabs/qrati-connect/embed/embed.js</span>
+---
+
+<span class="code-comment">&lt;!-- 2. Place the web component in your Astro template --&gt;</span>
+&lt;<span class="code-keyword">qrati-connect</span>
+  <span class="code-string">organization-id</span>=<span class="code-string">"your-organization-id"</span>
+  <span class="code-string">theme</span>=<span class="code-string">"light"</span>
+  <span class="code-string">router</span>=<span class="code-string">"hash"</span>
+&gt;&lt;/<span class="code-keyword">qrati-connect</span>&gt;
+
+<span class="code-comment">&lt;!-- 3. Load the embed script (module deferred by default in Astro) --&gt;</span>
+&lt;<span class="code-keyword">script</span> <span class="code-string">src</span>=<span class="code-string">"https://cdn.jsdelivr.net/npm/@qratilabs/qrati-connect/embed/embed.js"</span>
+  <span class="code-string">data-organization-id</span>=<span class="code-string">"your-organization-id"</span>
+  <span class="code-string">data-router</span>=<span class="code-string">"hash"</span>&gt;&lt;/<span class="code-keyword">script</span>&gt;</code></pre>
+            </div>
+          </section>
+
+          <!-- FAQ Section -->
+          <section class="seo-section" aria-labelledby="faq-heading">
+            <div class="seo-section-header">
+              <span class="seo-kicker">Common Questions</span>
+              <h2 id="faq-heading">Frequently Asked Questions</h2>
+              <p>Everything you need to know about embedding an event photo gallery in Astro.</p>
+            </div>
+
+            <div class="faq-list">
+              <details class="faq-item" open>
+                <summary class="faq-question">
+                  <span>How do I embed an event photo gallery in Astro?</span>
+                  <span class="faq-icon" aria-hidden="true">+</span>
+                </summary>
+                <div class="faq-answer">
+                  Load the Qrati Connect embed script from CDN via a <code style="color:var(--brand-accent)">&lt;script&gt;</code> tag in your Astro page (or import it in a client-side island). Then place <code style="color:var(--brand-accent)">&lt;qrati-connect organization-id="YOUR_ORG_ID" theme="light" router="hash"&gt;&lt;/qrati-connect&gt;</code> in your template. It provides responsive masonry galleries, lightbox, and photo uploads out of the box.
+                </div>
+              </details>
+
+              <details class="faq-item">
+                <summary class="faq-question">
+                  <span>Can event attendees upload photos directly through the Astro gallery?</span>
+                  <span class="faq-icon" aria-hidden="true">+</span>
+                </summary>
+                <div class="faq-answer">
+                  Yes. When media uploads are enabled in your Qrati organization settings, attendees can upload photos and videos directly from mobile or desktop devices with client-side image compression and automatic HEIC conversion.
+                </div>
+              </details>
+
+              <details class="faq-item">
+                <summary class="faq-question">
+                  <span>How does Astro handle web component theme synchronization?</span>
+                  <span class="faq-icon" aria-hidden="true">+</span>
+                </summary>
+                <div class="faq-answer">
+                  Astro sets <code style="color:var(--brand-accent)">data-theme</code> on the <code style="color:var(--brand-accent)">&lt;html&gt;</code> element via a pre-hydration inline script to avoid flash of unstyled content. A client-side listener in the page script updates the <code style="color:var(--brand-accent)">theme</code> attribute on <code style="color:var(--brand-accent)">&lt;qrati-connect&gt;</code> reactively whenever the user toggles the theme button.
+                </div>
+              </details>
+
+              <details class="faq-item">
+                <summary class="faq-question">
+                  <span>Does the Qrati Connect web component support dark mode?</span>
+                  <span class="faq-icon" aria-hidden="true">+</span>
+                </summary>
+                <div class="faq-answer">
+                  Yes. The component accepts a <code style="color:var(--brand-accent)">theme</code> attribute (<code style="color:var(--brand-accent)">'light'</code> or <code style="color:var(--brand-accent)">'dark'</code>), enabling seamless synchronization with your Astro application's host theme and system color preferences.
+                </div>
+              </details>
+
+              <details class="faq-item">
+                <summary class="faq-question">
+                  <span>Can I run photo contests and display rankings in the Astro gallery?</span>
+                  <span class="faq-icon" aria-hidden="true">+</span>
+                </summary>
+                <div class="faq-answer">
+                  Yes. Qrati Connect supports contest mode, star ratings, emoji reactions, and ranked leaderboards configured directly from your Qrati organization dashboard.
+                </div>
+              </details>
+            </div>
+          </section>
+
+          <!-- CTA Section -->
+          <section class="seo-section seo-cta-section" aria-labelledby="cta-heading">
+            <div class="seo-cta-card">
+              <div class="seo-cta-content">
+                <span class="seo-kicker">Host on Qrati &middot; Embed Anywhere</span>
+                <h2 id="cta-heading">
+                  Host Your Event on Qrati.&nbsp;
+                  <span class="cta-highlight">Stream the Live Gallery on Your Website.</span>
+                </h2>
+                <p class="seo-cta-copy">
+                  Planning a conference, festival, wedding, summit, or private celebration?
+                  Host your event on Qrati to capture every attendee memory with instant QR uploads,
+                  moderation workflows, and a live interactive photo wall embedded in your Astro application.
+                </p>
+
+                <div class="seo-cta-steps">
+                  <div class="cta-step">
+                    <span class="cta-step-num">1</span>
+                    <div>
+                      <strong>Create Your Event</strong>
+                      <p>Set up your event space on Qrati with branding, upload permissions, and privacy controls in 60 seconds.</p>
+                    </div>
+                  </div>
+                  <div class="cta-step">
+                    <span class="cta-step-num">2</span>
+                    <div>
+                      <strong>Attendees Snap &amp; Upload</strong>
+                      <p>Guests scan your event QR code to upload photos and videos instantly—no app download required.</p>
+                    </div>
+                  </div>
+                  <div class="cta-step">
+                    <span class="cta-step-num">3</span>
+                    <div>
+                      <strong>Embed Live Gallery</strong>
+                      <p>Drop &lt;qrati-connect&gt; into your Astro page to display the live mosaic photo stream to all your visitors.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="seo-cta-actions">
+                  <a href="https://qrati.com" target="_blank" rel="noopener noreferrer" class="btn-cta-primary">
+                    Host Your Event on Qrati
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M5 12h14"/>
+                      <path d="m12 5 7 7-7 7"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
         </main>
 
         <!-- Footer -->
-        <footer class="mt-6 pb-2">
-          <div class="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-between">
-            <div class="flex gap-3 items-center">
-              <img src="https://assets.qrati.com/images/qrati-connect-logo-square.png" alt="Qrati Connect Logo" class="h-9 w-auto" referrerpolicy="no-referrer" />
-              <div class="flex flex-col gap-1 items-start">
-                <span class="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                  <span class="text-host-500">Qrati</span> Connect
-                </span>
-                <span class="text-xs text-neutral-500 dark:text-neutral-400">Elevate your event experience.</span>
-              </div>
+        <footer class="footer">
+          <div class="footer-brand">
+            <img
+              src="https://assets.qrati.com/images/qrati-connect-logo-square.png"
+              alt="Qrati Connect logo"
+              referrerpolicy="no-referrer"
+            />
+            <div>
+              <span class="footer-title"><span>Qrati</span> Connect</span>
+              <p>Elevate your event experience.</p>
             </div>
-
-            <div class="flex flex-col items-center sm:items-end gap-2">
-              <nav class="flex flex-wrap justify-center gap-x-5 gap-y-2 sm:justify-end" aria-label="Footer navigation">
-                <a href="https://qrati.com" target="_blank" rel="noopener noreferrer" class="text-xs text-neutral-500 dark:text-neutral-400 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100">qrati.com</a>
-                <a href="https://www.npmjs.com/package/@qratilabs/qrati-connect" target="_blank" rel="noopener noreferrer" class="text-xs text-neutral-500 dark:text-neutral-400 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100">npm</a>
-                <a href={`https://github.com/${GITHUB_ORG}`} target="_blank" rel="noopener noreferrer" class="text-xs text-neutral-500 dark:text-neutral-400 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100">GitHub</a>
-                <a href="https://qrati.com/pricing" target="_blank" rel="noopener noreferrer" class="text-xs text-neutral-500 dark:text-neutral-400 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100">Pricing</a>
-              </nav>
-              <p class="text-center text-[0.65rem] text-neutral-400 dark:text-neutral-500 sm:text-left">
-                &copy; {new Date().getFullYear()} Qrati Labs. All rights reserved.
-              </p>
-            </div>
+          </div>
+          <div class="footer-meta">
+            <nav aria-label="Footer navigation">
+              <a href="https://qrati.com" target="_blank" rel="noopener noreferrer">qrati.com</a>
+              <a href={npmUrl} target="_blank" rel="noopener noreferrer">npm</a>
+              <a href={`https://github.com/${GITHUB_ORG}`} target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://qrati.com/pricing" target="_blank" rel="noopener noreferrer">Pricing</a>
+              <button type="button" class="footer-cookie-btn" id="cookie-prefs-btn">
+                Cookie Preferences
+              </button>
+            </nav>
+            <p class="footer-note">&copy; {year} Qrati Labs. All rights reserved.</p>
           </div>
         </footer>
       </div>
     </div>
 
-    <!-- Theme toggle + demo-auth embed controller -->
-    <script is:inline define:vars={{ EMBED_URL, EXAMPLE_ORG_ID, API_ENDPOINT }}>
+    <!-- Theme toggle + widget theme sync -->
+    <script is:inline define:vars={{ QRATI_SCRIPT_URL, ORGANIZATION_ID }}>
       (function () {
         var root = document.documentElement;
         var btn = document.getElementById('theme-toggle');
-        var iconMoon = document.getElementById('icon-moon');
-        var iconSun = document.getElementById('icon-sun');
-        var STORAGE_KEY = 'qc_demo_user';
-        var byId = function (id) { return document.getElementById(id); };
+        var widget = document.getElementById('qrati-widget');
 
-        function loadUser() {
-          try {
-            var raw = localStorage.getItem(STORAGE_KEY);
-            return raw ? JSON.parse(raw) : null;
-          } catch (e) {
-            return null;
-          }
+        function getTheme() {
+          return root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
         }
 
-        async function hashEmail(email) {
-          var data = new TextEncoder().encode(email.toLowerCase().trim());
-          var buf = await crypto.subtle.digest('SHA-256', data);
-          return Array.from(new Uint8Array(buf))
-            .map(function (b) { return b.toString(16).padStart(2, '0'); })
-            .join('')
-            .slice(0, 16);
+        function applyTheme(t) {
+          root.setAttribute('data-theme', t);
+          root.classList.toggle('dark', t === 'dark');
+          if (btn) btn.textContent = t === 'dark' ? '☀️ Light' : '🌙 Dark';
+          if (widget) widget.setAttribute('theme', t);
+          localStorage.setItem('qc-theme', t);
         }
 
-        function mountEmbed(user) {
-          var c = byId('qrati-embed');
-          c.innerHTML = '';
+        // Sync button label with current theme (set by pre-hydration script)
+        applyTheme(getTheme());
+
+        if (btn) {
+          btn.addEventListener('click', function () {
+            applyTheme(getTheme() === 'dark' ? 'light' : 'dark');
+          });
+        }
+
+        // Load the qrati-connect embed script
+        if (QRATI_SCRIPT_URL) {
           var s = document.createElement('script');
+          s.src = QRATI_SCRIPT_URL;
           s.async = true;
-          s.src = EMBED_URL;
-          s.dataset.organizationId = EXAMPLE_ORG_ID;
-          s.dataset.router = 'hash';
-          s.dataset.theme = root.classList.contains('dark') ? 'dark' : 'light';
-          s.dataset.uid = user.userId;
-          s.dataset.fname = user.fname;
-          s.dataset.lname = user.lname;
-          c.appendChild(s);
+          document.body.appendChild(s);
         }
+      })();
+    </script>
 
-        function showUser(user) {
-          byId('login').hidden = true;
-          byId('session').hidden = false;
-          byId('session-text').innerHTML =
-            'Signed in as <strong>' + user.fname + ' ' + user.lname + '</strong> (' + user.email + ')';
-          mountEmbed(user);
-        }
+    <!-- Cookie Consent (client-side module) -->
+    <script>
+      import { checkConsentRequired, ensureCookieConsentInitialized, showCookiePreferences } from '../lib/cookieConsent';
 
-        function applyTheme(isDark) {
-          root.classList.toggle('dark', isDark);
-          iconMoon.classList.toggle('hidden', isDark);
-          iconSun.classList.toggle('hidden', !isDark);
-          var u = loadUser();
-          if (u) mountEmbed(u);
-        }
+      checkConsentRequired().then(function (required) {
+        ensureCookieConsentInitialized(required);
+      });
 
-        // Sync UI with the state already set by the FOUC-guard in <head>
-        applyTheme(root.classList.contains('dark'));
-
-        btn.addEventListener('click', function () {
-          var nowDark = !root.classList.contains('dark');
-          localStorage.setItem('qc-theme', nowDark ? 'dark' : 'light');
-          applyTheme(nowDark);
+      var cookieBtn = document.getElementById('cookie-prefs-btn');
+      if (cookieBtn) {
+        cookieBtn.addEventListener('click', function () {
+          showCookiePreferences();
         });
+      }
 
-        byId('logout').addEventListener('click', function () {
-          localStorage.removeItem(STORAGE_KEY);
-          byId('session').hidden = true;
-          byId('login').hidden = false;
-        });
-
-        byId('login-form').addEventListener('submit', async function (e) {
-          e.preventDefault();
-          var email = byId('email').value.trim();
-          var name = byId('name').value.trim();
-          var err = byId('error');
-          if (!email || !name) {
-            err.textContent = 'Email and name are required.';
-            err.hidden = false;
-            return;
-          }
-          err.hidden = true;
-          var submitBtn = byId('submit');
-          submitBtn.disabled = true;
-          submitBtn.textContent = 'Signing in…';
-          var userId = await hashEmail(email);
-          var parts = name.split(/\s+/);
-          var fname = parts.shift() || '';
-          var lname = parts.join(' ');
-          var user = { userId: userId, email: email, fname: fname, lname: lname };
-          if (API_ENDPOINT) {
-            try {
-              await fetch(API_ENDPOINT, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email, name: name, userId: userId }),
-              });
-            } catch (e2) {
-              console.error('demo-login failed:', e2);
-            }
-          }
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Sign in & load widget';
-          showUser(user);
-        });
-
-        var existing = loadUser();
-        if (existing) showUser(existing);
-      }());
+      window.showCookiePreferences = showCookiePreferences;
     </script>
   </body>
 </html>
