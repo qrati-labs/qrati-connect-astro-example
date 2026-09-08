@@ -37,13 +37,6 @@ pnpm dev
 
 Open **http://localhost:4321** to view the demo.
 
-## Configuration
-
-| Variable                   | Description                                                       |
-| ---------------------------| --------------------------------------------------------------------|
-| `PUBLIC_EXAMPLE_ORG_ID`    | Your Qrati organization ID                                        |
-| `PUBLIC_QRATI_SCRIPT_URL`  | CDN URL of the embed script (`embed/embed.js`)                    |
-
 ## Other integration methods
 
 - **React component** — `import { QratiConnect }` (see the React / Next / Preact examples).
