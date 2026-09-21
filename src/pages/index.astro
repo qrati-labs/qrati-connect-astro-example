@@ -548,6 +548,9 @@ const year = new Date().getFullYear();
         if (QRATI_SCRIPT_URL) {
           var s = document.createElement('script');
           s.src = QRATI_SCRIPT_URL;
+          if (QRATI_SCRIPT_URL.indexOf('/element/web.es.js') !== -1) {
+            s.type = 'module';
+          }
           s.async = true;
           document.body.appendChild(s);
         }
