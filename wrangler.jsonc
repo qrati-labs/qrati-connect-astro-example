@@ -6,7 +6,7 @@
 		"nodejs_compat"
 	],
 	"name": "qrati-connect-astro-example",
-	"main": "@astrojs/cloudflare/entrypoints/server",
+	"main": "src/worker.ts",
 	"observability": {
 		"enabled": true
 	},
