@@ -6,8 +6,8 @@
     "scripts": {
         "dev": "astro dev",
         "build": "astro build",
-        "preview": "pnpm run build && wrangler dev",
-        "deploy": "pnpm run build && wrangler deploy"
+        "preview": "pnpm run build && wrangler dev --config wrangler.jsonc",
+        "deploy": "pnpm run build && wrangler deploy --config wrangler.jsonc"
     },
     "dependencies": {
         "@astrojs/cloudflare": "14.3.0",
